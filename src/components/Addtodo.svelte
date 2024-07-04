@@ -11,19 +11,24 @@
     }
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        newTodo.startDate = new Date()
+        let temp = {
+            ...newTodo,
+            startDate:new Date(),
+        }
         let res = await fetch(`${backend_URL}/todos`,{
             headers: {
                 "Content-Type": "application/json",
             },
             method : "POST",
-            body : JSON.stringify(newTodo)
+            body : JSON.stringify(temp)
         })
         let result = await res.json();
-        if(result._id){
+        if(result.code===400){
+            console.error(result.message)
+        }
+        else{
             router.goto('/todos')
         }
-        
     }
 </script>
 
